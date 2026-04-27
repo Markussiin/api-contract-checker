@@ -1,0 +1,15 @@
+{
+  "type": "object",
+  "required": ["id", "email", "status"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "number" },
+    "email": { "type": "string" },
+    "status": { "type": "string", "enum": ["active", "disabled"] },
+    "roles": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}
+

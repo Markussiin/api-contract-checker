@@ -1,0 +1,27 @@
+{
+  "name": "api-contract-checker",
+  "version": "0.1.0",
+  "description": "A dependency-free CLI for validating API response samples against lightweight JSON contracts.",
+  "type": "module",
+  "bin": {
+    "api-contract-checker": "./bin/api-contract-checker.js"
+  },
+  "scripts": {
+    "test": "node --test --test-isolation=none",
+    "check": "node --check bin/api-contract-checker.js && node --check src/cli.js && node --check src/validator.js && node --check src/reporter.js && node --check src/loader.js"
+  },
+  "keywords": [
+    "api",
+    "contract",
+    "json",
+    "schema",
+    "cli",
+    "developer-tools"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}
+

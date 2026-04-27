@@ -1,0 +1,15 @@
+{
+  "cases": [
+    {
+      "name": "valid user response",
+      "contract": "user.contract.json",
+      "sample": "user.sample.json"
+    },
+    {
+      "name": "broken user response",
+      "contract": "user.contract.json",
+      "sample": "broken-user.sample.json"
+    }
+  ]
+}
+
