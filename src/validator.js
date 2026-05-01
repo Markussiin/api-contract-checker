@@ -12,9 +12,10 @@ function validateNode(contract, value, path, issues) {
   }
 
   const allowedTypes = normalizeTypes(contract.type);
+  const actualType = typeOf(value);
 
-  if (allowedTypes.length > 0 && !allowedTypes.includes(typeOf(value))) {
-    issues.push(issue("type-mismatch", path, `Expected ${allowedTypes.join(" or ")}, received ${typeOf(value)}`));
+  if (allowedTypes.length > 0 && !allowedTypes.includes(actualType)) {
+    issues.push(issue("type-mismatch", path, `Expected ${allowedTypes.join(" or ")}, received ${actualType}`));
     return;
   }
 
@@ -22,13 +23,23 @@ function validateNode(contract, value, path, issues) {
     issues.push(issue("enum-mismatch", path, `Expected one of ${JSON.stringify(contract.enum)}`));
   }
 
-  if (contract.type === "object" || contract.properties || contract.required) {
+  if (shouldValidateObject(contract, allowedTypes, actualType)) {
     validateObject(contract, value, path, issues);
   }
 
-  if (contract.type === "array" || contract.items) {
+  if (shouldValidateArray(contract, allowedTypes, actualType)) {
     validateArray(contract, value, path, issues);
   }
+}
+
+function shouldValidateObject(contract, allowedTypes, actualType) {
+  const hasObjectShape = typeAllows(allowedTypes, "object") || contract.properties || contract.required;
+  return hasObjectShape && (allowedTypes.length === 0 || actualType === "object");
+}
+
+function shouldValidateArray(contract, allowedTypes, actualType) {
+  const hasArrayShape = typeAllows(allowedTypes, "array") || contract.items;
+  return hasArrayShape && (allowedTypes.length === 0 || actualType === "array");
 }
 
 function validateObject(contract, value, path, issues) {
@@ -88,6 +99,10 @@ function normalizeTypes(type) {
   return Array.isArray(type) ? type : [type];
 }
 
+function typeAllows(types, type) {
+  return types.includes(type);
+}
+
 function typeOf(value) {
   if (Array.isArray(value)) {
     return "array";
@@ -107,4 +122,3 @@ function isObject(value) {
 function issue(code, path, message) {
   return { code, path, message };
 }
-

@@ -72,3 +72,29 @@ test("validates array item contracts and enum values", () => {
   );
 });
 
+test("allows nullable object and array contracts", () => {
+  assert.deepEqual(
+    validateContract(
+      {
+        type: ["object", "null"],
+        required: ["id"],
+        properties: {
+          id: { type: "number" }
+        }
+      },
+      null
+    ),
+    []
+  );
+
+  assert.deepEqual(
+    validateContract(
+      {
+        type: ["array", "null"],
+        items: { type: "string" }
+      },
+      null
+    ),
+    []
+  );
+});
